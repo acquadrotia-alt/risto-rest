@@ -15,6 +15,9 @@
  * risolvera' il D1 del tenant dinamicamente (vedi docs/ARCHITETTURA_CLOUD.md).
  */
 
+import { handleAdmin } from "./admin.js";
+import { UI_HTML } from "./ui.js";
+
 const CONFIG_TABLES = ["anagra", "anagraDescrizioni", "ean", "reparti", "iva", "pagamenti",
   "operatori", "gruppovar", "GruppiVariazioniArt", "varauto", "headmnu", "dettmnu",
   "ingredienti", "ingredientiplu", "allergeni", "allergeniplu", "headoff", "dettoff",
@@ -96,6 +99,12 @@ export default {
     const url = new URL(request.url);
     const p = url.pathname;
     try {
+      // back-office: interfaccia web + API amministrazione
+      if (p === "/" || p === "/admin" || p === "/admin/") {
+        return new Response(UI_HTML, { headers: { "content-type": "text/html; charset=utf-8" } });
+      }
+      if (p.startsWith("/admin/api/")) return handleAdmin(request, env, url);
+
       if (p === "/v1/health") return json({ ok: true, service: "ristorandro-api", ts: Date.now() });
 
       if (p === "/v1/device/activate" && request.method === "POST") {

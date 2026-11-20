@@ -29,3 +29,15 @@ Codice: `cloud/worker/` (Cloudflare Worker, binding D1: CONTROL, TENANT_DEV).
     CLOUDFLARE_ACCOUNT_ID=<account> npx wrangler deploy
     # impostare il secret una volta:
     cat license_private.pem | npx wrangler secret put LICENSE_PRIVATE_KEY
+
+## Back-office web (Fase 4)
+- Servito dal Worker su `/` (stesso dominio dell'API).
+- Login: `POST /admin/api/login` → token di sessione (HMAC, secret `ADMIN_SECRET`).
+- Password utenti: PBKDF2-SHA256 (`cloud/worker/src/auth.js`).
+- Area rivenditore (ruolo `superadmin`): `/admin/api/tenants` (lista/crea cliente+licenza),
+  `/admin/api/licenza` (aggiorna), `/admin/api/devices` (parco casse).
+- Area cliente: `/admin/api/data/<tabella>` (GET lista, POST upsert, DELETE logico) per
+  `articoli, reparti, iva, pagamenti, operatori`. Ogni scrittura aggiorna `_updated_at` → la cassa
+  la riceve al successivo `/v1/config/sync`.
+- Prototipo: il CRUD dati opera sul D1 del cliente demo (`TENANT_DEV`). In produzione il Worker
+  risolverà il D1 del tenant dal control-plane.
