@@ -1,0 +1,14 @@
+name = "ristorandro-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "CONTROL"
+database_name = "ristorandro-control"
+database_id = "e0292742-dd60-448b-8ba3-9d7784739034"
+
+[[d1_databases]]
+binding = "TENANT_DEV"
+database_name = "ristorandro-dev"
+database_id = "fcc2068d-420e-40c4-ac97-b0a705c1d088"
