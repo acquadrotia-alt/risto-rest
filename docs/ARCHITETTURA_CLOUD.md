@@ -105,9 +105,9 @@ Vantaggi:
 - "Riparti da zero" per un nuovo cliente = crei un DB vuoto dal template. Nessuna migrazione.
 - Backup, export e cancellazione per singolo cliente immediati (anche per GDPR).
 
-Caveat: gestire molti DB ha un limite pratico (centinaia). Per un parco da decine a basse centinaia di
-clienti va benissimo. Se un domani diventano migliaia, si valuta il modello a DB condiviso con
-`tenant_id`. **Da decidere insieme in base a quanti clienti prevedi.**
+Caveat: gestire molti DB ha un limite pratico (centinaia). **Deciso**: parco previsto **< 100 clienti**
+(con possibile crescita contenuta) → D1-per-tenant è la scelta definitiva. Se un domani diventassero
+migliaia, si rivaluterebbe il modello a DB condiviso con `tenant_id`.
 
 Ogni richiesta dall'APK porta: token dispositivo → risolve tenant → instrada al suo DB.
 
@@ -175,11 +175,21 @@ Stato operativo del momento, temporanei, code di stampa, lock.
 - **Conflitti:** la configurazione è "cloud vince" (sola lettura sulla cassa); le vendite non
   confliggono (append-only); lo stato tavoli è gestito dai lock.
 
-Da decidere insieme: **cosa deve funzionare in multi-cassa quando manca internet.** Offline totale
-con più casse sullo stesso locale è il caso più complesso (due casse non si vedono tra loro senza un
-punto di incontro). Opzioni: (a) una cassa "master" locale fa da hub in LAN quando il cloud non c'è —
-è di fatto il vecchio "SRV/CLIENT ON LINE"; (b) si accetta che offline ogni cassa lavori i propri
-tavoli. Scelta importante.
+**Deciso**: in un locale multi-cassa le casse devono restare **collegate fra loro anche offline**
+(condividono tavoli, palmari, stampanti comande). Quindi l'architettura prevede un **cluster LAN**:
+- una cassa fa da **master locale** (eredita il concetto del vecchio `SRV ON LINE`: l'app aveva già un
+  web server interno), le altre sono **client LAN** (`CLIENT ON LINE`);
+- la condivisione operativa in tempo reale (stato tavoli, instradamento comande alle stampanti,
+  palmari) avviene **in LAN**, e **funziona a internet spento**;
+- il **cloud sta sopra**: sincronizza configurazione e consolida le vendite quando la rete c'è, ma non
+  è richiesto per far funzionare il locale.
+
+Implicazioni di progetto:
+- il master LAN espone un'API locale (riusabile dal vecchio `HttpServer`/`starter`) che i client e i
+  palmari interrogano;
+- elezione/semplice designazione del master (configurabile) e gestione del caso "master spento";
+- i lock tavoli (`unlocktbl`) e le numerazioni condivise sono gestiti dal master in LAN, poi riconciliati
+  col cloud.
 
 ---
 
@@ -239,17 +249,23 @@ A ogni fase c'è qualcosa di funzionante e testabile.
 
 ---
 
-## 11. Decisioni ancora aperte
+## 11. Decisioni
 
-1. **Quanti clienti** prevedi nel tempo? (decide D1-per-tenant vs DB condiviso)
-2. **Multi-cassa offline**: serve il funzionamento a cassa-master in LAN senza internet, o basta
-   "online per condividere, offline ognuno per sé"?
-3. **Chi possiede l'account Cloudflare** di produzione? (per ora sviluppo/test li faccio sull'accesso
-   di questa sessione; la produzione va sul tuo account)
+Risolte:
+1. ✅ **Clienti < 100** → D1 per-tenant.
+2. ✅ **Multi-cassa**: cluster LAN con master locale, operativo anche offline; cloud sopra (sez. 6).
+3. ✅ **Account Cloudflare**: il token collegato a questa sessione è già l'account di produzione del
+   committente (*Acquadro.tia@…*). Regola di sicurezza adottata: si creano **solo** risorse nuove con
+   prefisso `ristorandro-`; **non si tocca nulla** degli altri progetti già presenti sull'account.
+   Opzione consigliata: token dedicato limitato al progetto.
+
+Ancora aperte:
 4. **Modello commerciale della licenza**: canone mensile/annuale per cassa? moduli a pagamento?
    free sulle Spice T sì/no?
 5. **Back-office**: una sola web app per tutti i clienti (consigliato), o separata per cliente?
 6. **Fattura elettronica**: la generazione resta sulla cassa o passa a un servizio cloud/intermediario?
+7. **Convenzioni Cloudflare**: seguire eventuali standard di nomi/struttura già usati negli altri
+   gestionali dell'account, o adottarne di nuovi per `ristorandro-`.
 
 ---
 
