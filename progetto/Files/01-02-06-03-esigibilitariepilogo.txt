@@ -1,0 +1,3 @@
+
+        <EsigibilitaIVA>@_Esigibilita_@</EsigibilitaIVA>
+        <RiferimentoNormativo>@_RifNormativo_@</RiferimentoNormativo>

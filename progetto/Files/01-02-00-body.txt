@@ -1,0 +1,13 @@
+  <FatturaElettronicaBody>
+    <DatiGenerali>
+      <DatiGeneraliDocumento>
+        <TipoDocumento>@_TipoDocumento_@</TipoDocumento>
+        <Divisa>@_DivisaDocumento_@</Divisa>
+        <Data>@_DataDocumento_@</Data>
+        <Numero>@_NumeroDocumento_@</Numero>@_DatiBollo_@@_ScontoMaggiorazione_@
+        <ImportoTotaleDocumento>@_ImpTotDocumento_@</ImportoTotaleDocumento>
+      </DatiGeneraliDocumento>@_DatiOrdineAcquisto_@@_DatiDDT_@
+    </DatiGenerali>
+    <DatiBeniServizi>
+@_DettaglioLinee_@@_DatiRiepilogo_@    </DatiBeniServizi>@_DatiPagamento_@
+  </FatturaElettronicaBody>

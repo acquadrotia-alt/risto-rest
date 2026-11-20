@@ -1,0 +1,55 @@
+#Generale
+DescrizioneStampa=Stampa Finanziario IVA
+Query=select codice,qta,importo,descrizione||" "||IVA as descrizione from (select 1 as codice,1 as qta,(case when h.nfat=0 and h.nric = 0 then 'Scontrini' when h.nfat<>0 then 'Fatture' when h.nric <> 0 then 'Ricevute' end) as descrizione,i.descrizione as IVA, sum(v.importo) as importo from headmov as h inner join venduto as v on h.nmov=v.nmov inner join iva as i on i.codice=v.iva where h.sospeso=0 and v.flgnf=0 and h.nfat=0 and h.nric=0 and h.flgnf=0 group by v.iva, (case when h.nfat=0 then 0 else 1 end), date (v.datam3) union select 2 as Codice,1 as Qta, (case when h.nfat=0 and h.nric = 0 then 'Scontrini' when h.nfat<>0 then 'Fatture' when h.nric <> 0 then 'Ricevute' end) as Descrizione,i.descrizione as IVA, sum(v.importo) as Importo from headmov as h inner join venduto as v on h.nmov=v.nmov inner join iva as i on i.codice=v.iva where h.sospeso=0 and h.nfat<>0 and h.nric=0 and h.flgnf=0 group by v.iva, (case when h.nfat=0 then 0 else 1 end), date (v.datam3) union select 3 as Codice,1 as Qta, (case when h.nfat=0 and h.nric = 0 then 'Scontrini' when h.nfat<>0 then 'Fatture' when h.nric <> 0 then 'Ricevute' end) as Descrizione,i.descrizione as IVA, sum(v.importo) as Importo from headmov as h inner join venduto as v on h.nmov=v.nmov inner join iva as i on i.codice=v.iva where h.sospeso=0 and v.flgnf=0 and h.nfat=0 and h.nric<>0 and h.flgnf=0 group by v.iva, (case when h.nric=0 then 0 else 3 end), date (v.datam3) union select 4 as Codice,1 as Qta, 'Non Fiscale' as Descrizione,i.descrizione as IVA, sum(v.importo) as Importo from headmov as h inner join venduto as v on h.nmov=v.nmov inner join iva as i on i.codice=v.iva inner join reparti as ar on v.reparto=ar.codice where h.sospeso=0 and v.flgnf=1 and ar.nf=1 and h.nfat=0 group by v.iva, (case when h.nfat<>0 then 0 else 4 end), date (v.datam3) order by Descrizione desc,IVA)
+Stampa=true
+Mail=false
+Copia=false
+TipoStampa=C
+
+
+
+'StringaQta = "case when (lower(substr(venduto.codice,1,2))='vv' or lower(substr(venduto.codice,1,2))='ww') then 0 else qta end"
+'StringaB  =" (venduto.flgNF =0 or (select count(*) from reparti where reparti.codice=venduto.reparto and reparti.nf=1)>0) and "
+
+
+
+'Valori possibili per TipoStampa:
+'	I=Iva
+'		Default Query
+'	"Select iva as codice,sum(" & StringaQta & ") As qta,sum(importo) as importo,sum(prezzov*qta) - sum(importo) as sconto from Venduto inner join headmov on headmov.nmov=venduto.nmov where " & StringaB & "  headmov.sospeso =0  and lower(substr(venduto.codint,1,3))<>'mnu' and lower(substr(venduto.codint,1,3))<>'msg'  group by iva order by iva "
+	
+'	A=Articoli
+'	'	Default Query
+'	"Select codint as codice,descrizione,sum(qta) As qta,sum(importo + importo2) as importo,sum(prezzov*qta) - sum(importo) as sconto from Venduto where " & StringaB & "  lower(substr(venduto.codice,1,2))<>'vv' and brep = 0  and sospeso =0 and lower(substr(venduto.codint,1,3))<>'mnu'  and lower(substr(venduto.codint,1,3))<>'msg'   group by codint,descrizione order by importo,descrizione "
+'	
+'	RG=Guadagno Reparti
+'	'	Default Query
+'	"Select  reparto as codice,sum(" & StringaQta & ") As qta,sum(importo) as importo,case when max(guadagnop) >0 then round(round(sum(importo) * max(reparti.guadagnop),2)/100,2) else round(max(guadagnov) * sum(qta),2)  end as Guadagno from Venduto inner join reparti on reparti.codice = venduto.reparto where " & StringaB & "  sospeso =0  and lower(substr(venduto.codint,1,3))<>'mnu' and lower(substr(venduto.codint,1,3))<>'msg'  group by reparto order by reparto "
+'	
+'	FC=Fasce Orarie
+'	'	Default Query
+'	"Select substr(datam3,12,2) as codice,'Ore ' || substr(datam3,12,2) || '.00 Documenti ' || count(distinct(nmov)) as descrizione,sum(" & StringaQta & ") As qta,sum(importo) as importo,sum(prezzov*qta) - sum(importo) as sconto from Venduto where " & StringaB & "  sospeso =0 and lower(substr(venduto.codint,1,3))<>'mnu'  and lower(substr(venduto.codint,1,3))<>'msg'   group by substr(datam3,12,2) order by substr(datam3,12,2) "
+'	
+'	F=Finanziario
+'	'	Default Query
+'	"Select * from TmpFinanziario"
+'	
+'	R=Reparti
+'	'	Default Query
+'	"Select  reparto as codice,sum(" & StringaQta & ") As qta,sum(importo) as importo,sum(prezzov*qta) - sum(importo) as sconto from Venduto where " & StringaB & "  sospeso =0 and lower(substr(venduto.codint,1,3))<>'msg' and lower(substr(venduto.codint,1,3))<>'mnu'  group by reparto order by reparto "
+'	
+'	P=Pagamenti
+'	'	Default Query
+'	"Select codice,sum(qta) As qta,sum(importo) as importo from CausaliPagamenti where sospeso =0  and (select count(*) from venduto where venduto.nmov= CausaliPagamenti.nmov)>0  group by codice order by codice "
+'	
+'	C=Clienti
+'	'	Default Query
+'	"Select cliente as codice,count(*) As qta,sum(totale) as importo,max(clienti.descrizione) as descrizione from headmov inner join clienti on clienti.codice = headmov.cliente  where sospeso =0  and (select count(*) from venduto where venduto.nmov= headmov.nmov)>0  group by codice order by codice" 
+'	
+'	O=Operatori
+'	'	Default Query
+'	"Select operatore as codice,count(*) As qta,sum(totale) as importo,opdes as descrizione from headmov  where sospeso =0  and (select count(*) from venduto where venduto.nmov= headmov.nmov)>0  group by codice,opdes order by codice"
+'	
+'	MO=Movimenti
+'	'	Default Query
+'	"Select nmov as codice,(select count(*) from venduto where venduto.nmov=headmov.nmov) As qta,totale as importo,'Mov. ' || nmov || ':' || Case WHEN flgNF =0 AND nfat =0 AND nric =0 Then 'Scontrino' ELSE	CASE WHEN nfat >0 THEN	'Fattura N.' ||  nfat || ' ' || clides	ELSE CASE WHEN flgNF =1 and nfat =0 and nric =0 THEN 'Altro' else CASE WHEN nric>0 THEN	'Ricevuta N.' || nric	else 'NF' end end	END END || case when tavolo =0 then '' else ' (Tavolo' || tavolo || ')' end As descrizione from headmov where sospeso =0  and qta > 0  order by nmov " 

@@ -1,0 +1,76 @@
+package cassandraRisto.ital.designerscripts;
+
+/* loaded from: classes.dex */
+public class LS_stampe {
+    public static void LS_general(java.util.LinkedHashMap<java.lang.String, anywheresoftware.b4a.keywords.LayoutBuilder.ViewWrapperAndAnchor> linkedHashMap, int i, int i2, float f) {
+        anywheresoftware.b4a.keywords.LayoutBuilder.setScaleRate(0.3d);
+        linkedHashMap.get("pelenco").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("pelenco").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("pelenco").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("pelenco").vw.setHeight((int) ((1.0d * i2) - (0.0d * i2)));
+        linkedHashMap.get("pnlw").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("pnlw").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("pnlw").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("pnlw").vw.setHeight((int) ((1.0d * i2) - (0.0d * i2)));
+        linkedHashMap.get("label1").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("label1").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("label1").vw.setTop((int) (0.5d * i2));
+        linkedHashMap.get("label1").vw.setHeight((int) ((0.7d * i2) - (0.5d * i2)));
+        linkedHashMap.get("lbltitolo").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("lbltitolo").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("lbltitolo").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("lbltitolo").vw.setHeight((int) ((70.0d * f) - (0.0d * i2)));
+        linkedHashMap.get("chiudi").vw.setLeft((int) (0.0d * f));
+        linkedHashMap.get("chiudi").vw.setWidth((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("chiudi").vw.setTop((int) (0.0d * f));
+        linkedHashMap.get("chiudi").vw.setHeight((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("lblstampatitolo").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("lblstampatitolo").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("lblstampatitolo").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("lblstampatitolo").vw.setHeight((int) ((70.0d * f) - (0.0d * i2)));
+        linkedHashMap.get("ricerca").vw.setLeft((int) (0.0d * f));
+        linkedHashMap.get("ricerca").vw.setWidth((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("ricerca").vw.setTop((int) (0.0d * f));
+        linkedHashMap.get("ricerca").vw.setHeight((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("stampa").vw.setLeft((int) ((1.0d * i) - (70.0d * f)));
+        linkedHashMap.get("stampa").vw.setWidth((int) ((1.0d * i) - ((1.0d * i) - (70.0d * f))));
+        linkedHashMap.get("stampa").vw.setTop((int) (0.0d * f));
+        linkedHashMap.get("stampa").vw.setHeight((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("mail").vw.setLeft((int) ((1.0d * i) - (140.0d * f)));
+        linkedHashMap.get("mail").vw.setWidth((int) (((1.0d * i) - (70.0d * f)) - ((1.0d * i) - (140.0d * f))));
+        linkedHashMap.get("mail").vw.setTop((int) (0.0d * f));
+        linkedHashMap.get("mail").vw.setHeight((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("showgraph").vw.setLeft((int) ((1.0d * i) - (210.0d * f)));
+        linkedHashMap.get("showgraph").vw.setWidth((int) (((1.0d * i) - (140.0d * f)) - ((1.0d * i) - (210.0d * f))));
+        linkedHashMap.get("showgraph").vw.setTop((int) (0.0d * f));
+        linkedHashMap.get("showgraph").vw.setHeight((int) ((70.0d * f) - (0.0d * f)));
+        linkedHashMap.get("totale").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("totale").vw.setWidth((int) ((0.4d * i) - (0.0d * i)));
+        linkedHashMap.get("totale").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("totale").vw.setHeight((int) ((0.05d * i2) - (0.0d * i2)));
+        linkedHashMap.get("fatture").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("fatture").vw.setWidth((int) ((0.4d * i) - (0.0d * i)));
+        linkedHashMap.get("fatture").vw.setTop((int) (0.05d * i2));
+        linkedHashMap.get("fatture").vw.setHeight((int) ((0.1d * i2) - (0.05d * i2)));
+        linkedHashMap.get("fdata").vw.setLeft((int) (0.17d * i));
+        linkedHashMap.get("fdata").vw.setWidth((int) ((0.44d * i) - (0.17d * i)));
+        linkedHashMap.get("fdata").vw.setTop((int) (0.07d * i2));
+        linkedHashMap.get("fdata").vw.setHeight((int) ((0.14d * i2) - (0.07d * i2)));
+        linkedHashMap.get("pgrafico").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("pgrafico").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("pgrafico").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("pgrafico").vw.setHeight((int) ((1.0d * i2) - (0.0d * i2)));
+        linkedHashMap.get("pdettaglio").vw.setLeft((int) (0.0d * i));
+        linkedHashMap.get("pdettaglio").vw.setWidth((int) ((1.0d * i) - (0.0d * i)));
+        linkedHashMap.get("pdettaglio").vw.setTop((int) (70.0d * f));
+        linkedHashMap.get("pdettaglio").vw.setHeight((int) ((1.0d * i2) - (70.0d * f)));
+        linkedHashMap.get("filtroattivo").vw.setLeft((int) (0.4d * i));
+        linkedHashMap.get("filtroattivo").vw.setWidth((int) ((0.8d * i) - (0.4d * i)));
+        linkedHashMap.get("filtroattivo").vw.setTop((int) (0.0d * i2));
+        linkedHashMap.get("filtroattivo").vw.setHeight((int) ((0.1d * i2) - (0.0d * i2)));
+        linkedHashMap.get("edtricerca").vw.setLeft((int) (0.8d * i));
+        linkedHashMap.get("edtricerca").vw.setWidth((int) ((1.0d * i) - (0.8d * i)));
+        linkedHashMap.get("edtricerca").vw.setTop((int) (0.01d * i2));
+        linkedHashMap.get("edtricerca").vw.setHeight((int) ((0.09d * i2) - (0.01d * i2)));
+    }
+}

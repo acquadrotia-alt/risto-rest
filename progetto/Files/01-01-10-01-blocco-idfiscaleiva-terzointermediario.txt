@@ -1,0 +1,5 @@
+
+        <IdFiscaleIVA>
+          <IdPaese>@_IdPaeseTerzoIntermediario_@</IdPaese>
+          <IdCodice>@_CodiceTerzoIntermediario_@</IdCodice>
+        </IdFiscaleIVA>

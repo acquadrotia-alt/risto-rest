@@ -1,0 +1,43 @@
+'This code will be applied to the manifest file during compilation.
+'You do not need to modify it in most cases.
+'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136
+AddManifestText(
+<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34"/>
+<supports-screens android:largeScreens="true" 
+    android:normalScreens="true" 
+    android:smallScreens="true" 
+    android:anyDensity="true"/>)
+SetApplicationAttribute(android:icon, "@drawable/icon")
+SetApplicationAttribute(android:label, "$LABEL$")
+SetApplicationAttribute(android:largeHeap, "true")
+SetApplicationAttribute(android:usesCleartextTraffic, "true")
+CreateResourceFromFile(Macro, Themes.LightTheme)
+'Permessi originali
+AddPermission(android.permission.INTERNET)
+AddPermission(android.permission.WAKE_LOCK)
+AddPermission(android.permission.VIBRATE)
+AddPermission(android.permission.FOREGROUND_SERVICE)
+AddPermission(android.permission.REQUEST_INSTALL_PACKAGES)
+AddPermission(android.permission.ACCESS_NETWORK_STATE)
+'FileProvider (condivisione file, installazione aggiornamenti)
+AddApplicationText(
+  <provider
+  android:name="android.support.v4.content.FileProvider"
+  android:authorities="$PACKAGE$.provider"
+  android:exported="false"
+  android:grantUriPermissions="true">
+  <meta-data
+  android:name="android.support.FILE_PROVIDER_PATHS"
+  android:resource="@xml/provider_paths"/>
+  </provider>
+)
+CreateResource(xml, provider_paths,
+   <files-path name="name" path="shared" />
+)
+'Servizi in primo piano (Android 14+)
+SetServiceAttribute(httpclient, android:foregroundServiceType, "dataSync")
+SetServiceAttribute(ftpmanager, android:foregroundServiceType, "dataSync")
+SetServiceAttribute(usbpl2303service, android:foregroundServiceType, "connectedDevice")
+SetServiceAttribute(rpidevice, android:foregroundServiceType, "dataSync")
+AddPermission(android.permission.FOREGROUND_SERVICE_DATA_SYNC)
+AddPermission(android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE)

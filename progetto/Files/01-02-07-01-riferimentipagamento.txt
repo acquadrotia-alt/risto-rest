@@ -1,0 +1,5 @@
+
+        <DataRiferimentoTerminiPagamento>@_DataRifTermPag_@</DataRiferimentoTerminiPagamento>
+        <GiorniTerminiPagamento>@_GiorniTermPag_@</GiorniTerminiPagamento>
+        <DataScadenzaPagamento>@_DataScadPag_@</DataScadenzaPagamento>
+

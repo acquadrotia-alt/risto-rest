@@ -1,0 +1,5 @@
+
+        <ScontoMaggiorazione>
+          <Tipo>@_TipoScontoL_@</Tipo>
+          <Importo>@_ImportoScontoL_@</Importo>
+        </ScontoMaggiorazione>

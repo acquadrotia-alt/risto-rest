@@ -1,0 +1,8 @@
+      <DettaglioLinee>
+        <NumeroLinea>@_NumRigaDettaglio_@</NumeroLinea>@_TipoCessioneAbbuono_@@_BloccoTipoCessione_@@_CodiceInterno_@
+        <Descrizione>@_DescrizioneDettaglio_@</Descrizione>
+        <Quantita>@_QuantitaDettaglio_@</Quantita>@_BloccoUnitaMisura_@
+        <PrezzoUnitario>@_PrezzoUnitario_@</PrezzoUnitario>
+        <PrezzoTotale>@_PrezzoTotLinea_@</PrezzoTotale>
+        <AliquotaIVA>@_AliquotaLinea_@</AliquotaIVA>@_BloccoNaturaIVADettaglio_@
+		@_BloccoAltriDatiGestionali_@      </DettaglioLinee>

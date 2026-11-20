@@ -1,0 +1,2 @@
+
+          <Denominazione>@_DenominazioneTerzoIntermediario_@</Denominazione>

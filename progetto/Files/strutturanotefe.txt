@@ -1,0 +1,9 @@
+
+	<DettaglioLinee>
+		<NumeroLinea>@_NumLinea_@</NumeroLinea>
+		<Descrizione>@_TestoNota_@</Descrizione>
+		<PrezzoUnitario>0.00</PrezzoUnitario>
+		<PrezzoTotale>0.00</PrezzoTotale>
+		<AliquotaIVA>@_Iva_@</AliquotaIVA>@_BloccoNaturaIVADettaglio_@
+	</DettaglioLinee>
+	

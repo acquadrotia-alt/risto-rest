@@ -1,0 +1,3 @@
+
+          <Nome>@_NomeFornitore_@</Nome>
+          <Cognome>@_CognomeFornitore_@</Cognome>

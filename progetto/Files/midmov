@@ -1,0 +1,45 @@
+/* Formatting function for row details - modify as you need */
+function format ( d ) {
+    // `d` is the original data object for the row
+
+	htmlReturn='<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+		$.each( d, function( key, value ) 
+		{
+			if (key.substring(0,1)=="@")
+			{
+				if (key.substring(key.indexOf('_')+1)=="imp")
+				{
+					
+					htmlReturn = htmlReturn+'<td><b>Importo</b>: '+value+'</td> ';
+				}
+				if (key.substring(key.indexOf('_')+1)=="descr")
+				{
+					htmlReturn=htmlReturn+'<tr>';
+					htmlReturn = htmlReturn+'<td><b>Descrizione</b>: '+value+'</td> ';
+				}
+				if (key.substring(key.indexOf('_')+1)=="qta")
+				{
+					htmlReturn = htmlReturn+ '<td><b>Quantita</b> '+ value+' </td>';
+				}
+				if (key.substring(key.indexOf('_')+1)=="pagamento")
+				{
+					htmlReturn = htmlReturn+ '<td><b>Pagamento:</b> '+ value+' </td>';
+					htmlReturn = htmlReturn + '</tr>';
+				}
+			}
+		});
+	htmlReturn=htmlReturn+'</table>';
+	return htmlReturn;
+}
+ 
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        //"ajax": "http://localhost/prova/objects.txt",
+		"data": dataSet,
+        "columns": [
+            {
+                "class":          'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },

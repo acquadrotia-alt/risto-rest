@@ -1,0 +1,6 @@
+
+        <DatiOrdineAcquisto>
+        	<IdDocumento>@_IDOrdAcquisto_@</IdDocumento>
+        	<CodiceCUP>@_CodiceCUP_@</CodiceCUP>
+          <CodiceCIG>@_CodiceCIG_@</CodiceCIG>
+        </DatiOrdineAcquisto>

@@ -1,0 +1,6 @@
+
+        <IstitutoFinanziario>@_IstitutoFinanziario_@</IstitutoFinanziario>
+        <IBAN>@_IBANPagamento_@</IBAN>
+        <ABI>@_ABIPagamento_@</ABI>
+        <CAB>@_CABPagamento_@</CAB>
+        <BIC>@_BICPagamento_@</BIC>

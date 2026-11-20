@@ -1,0 +1,6 @@
+
+      <IscrizioneREA>
+        <Ufficio>@_UfficioREA_@</Ufficio>
+        <NumeroREA>@_NumeroREA_@</NumeroREA>@_BloccoCapitaleSocialeREA_@@_BloccoSocioUnicoREA_@
+        <StatoLiquidazione>@_StatoLiquidazione_@</StatoLiquidazione>
+      </IscrizioneREA>

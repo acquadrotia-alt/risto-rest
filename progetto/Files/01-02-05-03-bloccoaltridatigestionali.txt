@@ -1,0 +1,4 @@
+<AltriDatiGestionali>
+          <TipoDato>@_TipoDatoFiscale_@</TipoDato>
+          <RiferimentoTesto>@_RiferimentoTestoGestionale_@</RiferimentoTesto>
+        </AltriDatiGestionali>

@@ -1,0 +1,8 @@
+
+    <DatiPagamento>
+      <CondizioniPagamento>@_CondizioniPag_@</CondizioniPagamento>
+      <DettaglioPagamento>
+        <ModalitaPagamento>@_ModalitaPag_@</ModalitaPagamento>@_RiferimentiPagamento_@
+        <ImportoPagamento>@_ImpPagamento_@</ImportoPagamento>@_CoordinateBancarie_@
+      </DettaglioPagamento>
+    </DatiPagamento>

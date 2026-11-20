@@ -1,0 +1,2 @@
+
+      <CodiceFiscale>@_CFFornitore_@</CodiceFiscale>

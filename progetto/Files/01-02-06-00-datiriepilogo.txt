@@ -1,0 +1,5 @@
+      <DatiRiepilogo>
+        <AliquotaIVA>@_AliquotaRiepilogo_@</AliquotaIVA>@_BloccoNaturaIVARiepilogo_@
+        <ImponibileImporto>@_TotaleImponibile_@</ImponibileImporto>
+        <Imposta>@_TotaleImposta_@</Imposta>@_BloccoEsigibilitaRiepilogo_@
+      </DatiRiepilogo>

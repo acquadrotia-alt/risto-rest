@@ -1,0 +1,5 @@
+
+        <IdFiscaleIVA>
+          <IdPaese>@_IDPaeseFornitore_@</IdPaese>
+          <IdCodice>@_CodiceFornitore_@</IdCodice>
+        </IdFiscaleIVA>

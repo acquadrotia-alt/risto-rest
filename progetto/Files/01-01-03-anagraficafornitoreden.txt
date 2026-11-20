@@ -1,0 +1,2 @@
+
+          <Denominazione>@_DenominazioneFornitore_@</Denominazione>

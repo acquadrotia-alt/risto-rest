@@ -1,0 +1,8 @@
+
+    <TerzoIntermediarioOSoggettoEmittente>
+      <DatiAnagrafici>@_BloccoIDFiscaleIVA-TerzoIntermediario_@@_BloccoCodF-TerzoIntermediario_@
+        <Anagrafica>@_AnagraficaTerzoIntermediario_@
+        </Anagrafica>
+      </DatiAnagrafici>
+    </TerzoIntermediarioOSoggettoEmittente>
+    <SoggettoEmittente>TZ</SoggettoEmittente>

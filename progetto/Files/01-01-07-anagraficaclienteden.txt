@@ -1,0 +1,2 @@
+
+          <Denominazione>@_DenominazioneCliente_@</Denominazione>

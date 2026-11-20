@@ -1,0 +1,5 @@
+
+        <DatiBollo>
+          <BolloVirtuale>@_BolloVirtuale_@</BolloVirtuale>
+          <ImportoBollo>@_ImportoBollo_@</ImportoBollo>
+        </DatiBollo>

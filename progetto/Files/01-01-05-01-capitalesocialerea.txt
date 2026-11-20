@@ -1,0 +1,2 @@
+
+        <CapitaleSociale>@_CapitaleSociale_@</CapitaleSociale>

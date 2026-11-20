@@ -1,0 +1,5 @@
+
+      <DatiDDT>
+        <NumeroDDT>@_NumeroDDT_@</NumeroDDT>
+        <DataDDT>@_DataDDT_@</DataDDT>@_BloccoRiferimentoLineaDDT_@
+      </DatiDDT>
