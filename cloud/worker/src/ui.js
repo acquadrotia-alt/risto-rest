@@ -54,10 +54,10 @@ function loginView(){
 let TAB='dati';
 function shell(){
   $('#logout').style.display='';$('#who').textContent=ME.email+' ('+ME.ruolo+')';
-  const tabs=[['dati','Dati']];if(ME.ruolo==='superadmin'){tabs.unshift(['clienti','Clienti & licenze']);tabs.push(['dispositivi','Dispositivi'])}
+  const tabs=[['dati','Dati']];if(ME.ruolo==='superadmin'){tabs.unshift(['clienti','Clienti & licenze']);tabs.push(['dispositivi','Dispositivi']);tabs.push(['genlic','Genera licenze (app vecchia)'])}
   app.innerHTML='<nav>'+tabs.map(([k,l])=>'<button data-t="'+k+'" class="'+(k===TAB?'on':'')+'">'+l+'</button>').join('')+'</nav><div id="view"></div>';
   app.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{TAB=b.dataset.t;shell()});
-  ({clienti:viewClienti,dispositivi:viewDevices,dati:viewDati}[TAB])();
+  ({clienti:viewClienti,dispositivi:viewDevices,dati:viewDati,genlic:viewGenLic}[TAB])();
 }
 async function viewClienti(){
   const v=$('#view');v.innerHTML='<div class="card"><div class="row2"><b style="flex:1">Clienti</b><button class="pri" id="nc">+ Nuovo cliente</button></div></div><div id="tc" class="mut">...</div>';
@@ -69,6 +69,30 @@ async function viewDevices(){
   const v=$('#view');v.innerHTML='<div id="td" class="mut">...</div>';
   try{const d=await api('/admin/api/devices');$('#td').outerHTML='<div class="tbl-scroll"><table><tr><th>Cliente</th><th>Matricola RT</th><th>Ruolo LAN</th><th>Ultimo contatto</th></tr>'+
     d.devices.map(x=>'<tr><td>'+esc(x.tenant_id)+'</td><td>'+esc(x.matricola_rt)+'</td><td>'+esc(x.ruolo_lan)+'</td><td class="mut">'+(x.ultimo_contatto?new Date(x.ultimo_contatto).toLocaleString('it-IT'):'—')+'</td></tr>').join('')+'</table></div>'}catch(e){$('#td').innerHTML='<div class="err">'+e.message+'</div>'}
+}
+function dl(nome,contenuto){const b=new Blob([contenuto],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nome;a.click()}
+async function viewGenLic(){
+  const v=$('#view');
+  v.innerHTML='<div class="card"><b>Genera licenze — app vecchia (formato DES legacy)</b>'+
+    '<div class="mut" style="margin:6px 0 12px">Inserisci la matricola fiscale (es. 1BMST058820). Genera il codice di attivazione (PRO) e il Basic Support, scaricabili come file pronti da mettere nella cartella <code>/Licenze</code> della cassa.</div>'+
+    '<div class="grid" style="max-width:520px">'+
+    '<label class="f" style="margin:0">Matricola fiscale</label><input id="gm" placeholder="1BMST058820">'+
+    '<label class="f" style="margin:0">Palmari attivi</label><input id="gp" type="number" value="2">'+
+    '<label class="f" style="margin:0">Anno scadenza</label><input id="gs" type="number" value="2099">'+
+    '<label class="f" style="margin:0">Anno Basic Support</label><input id="gb" type="number" value="2099">'+
+    '</div><button class="pri" id="gg" style="margin-top:14px">Genera</button><div class="err" id="ge"></div></div>'+
+    '<div id="gout"></div>';
+  $('#gg').onclick=async()=>{$('#ge').textContent='';try{
+    const d=await api('/admin/api/genera-licenza',{method:'POST',body:JSON.stringify({matricola:$('#gm').value,palmari:+$('#gp').value,anno_scadenza:+$('#gs').value,anno_bs:+$('#gb').value})});
+    window._lic=d;
+    $('#gout').innerHTML='<div class="card"><b>Risultato</b> <span class="pill">seriale '+esc(d.seriale)+'</span>'+
+      '<label class="f">Codice di attivazione</label><input readonly value="'+esc(d.attivazione)+'" onclick="this.select()">'+
+      '<label class="f">Codice Basic Support ('+esc(d.anno_bs)+')</label><input readonly value="'+esc(d.basic_support)+'" onclick="this.select()">'+
+      '<div class="row2" style="margin-top:12px"><button class="pri" id="d1">Scarica file attivazione (.txt)</button><button class="pri" id="d2">Scarica file Basic Support (.bs)</button></div>'+
+      '<div class="mut" style="margin-top:8px">Metti i due file nella cartella <code>/storage/emulated/0/Licenze/</code> della cassa e avvia l\\'app.</div></div>';
+    $('#d1').onclick=()=>dl(d.file_txt_nome,d.file_txt);
+    $('#d2').onclick=()=>dl(d.file_bs_nome,d.file_bs);
+  }catch(e){$('#ge').textContent=e.message}};
 }
 let CURT='articoli';
 async function viewDati(){

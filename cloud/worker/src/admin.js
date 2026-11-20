@@ -1,5 +1,34 @@
 // API del back-office (area rivenditore + area cliente) e CRUD generico sui dati di configurazione.
 import { verifyPassword, makeSession, readSession } from "./auth.js";
+import { desEncryptCBC } from "./des.js";
+
+// --- Generatore licenze LEGACY (vecchio formato DES dell'app RistorAndro) ---
+function b64bytes(b64) { const s = atob(b64); const u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }
+function hexUp(u) { return [...u].map((b) => b.toString(16).padStart(2, "0")).join("").toUpperCase(); }
+function fiscaleToSeriale(m) {
+  m = (m || "").toUpperCase().trim();
+  if (m.length === 10) return m;                 // gia' seriale
+  if (m.length === 11) return m[3] + m[4] + m[0] + m[1] + m.substring(5, 11); // fiscale -> seriale
+  throw new Error("matricola non valida (attese 10 o 11 cifre, ricevute " + m.length + ")");
+}
+function bsTail(anno) { const L = "abcdefghij"; let t = ""; for (const d of String(anno)) t += L[parseInt(d)] + "a"; return t; }
+function generaLicenzeLegacy(env, opts) {
+  const kv = b64bytes(env.LEGACY_LIC); // 8 byte chiave + 8 byte IV
+  const key = kv.subarray(0, 8), iv = kv.subarray(8, 16);
+  const ser = fiscaleToSeriale(opts.matricola);
+  const palmari = Math.max(0, Math.min(9, parseInt(opts.palmari || 0)));
+  const annoScad = String(opts.anno_scadenza || 2099).padStart(4, "0").slice(0, 4);
+  const annoBs = String(opts.anno_bs || 2099).padStart(4, "0").slice(0, 4);
+  const attPlain = ser + "1" + "0" + "000000" + palmari + "0" + annoScad + "12" + "31"; // PRO, scad. 31/12
+  const bsPlain = ser + bsTail(annoBs);
+  const enc = new TextEncoder();
+  return {
+    seriale: ser,
+    attivazione: hexUp(desEncryptCBC(key, iv, enc.encode(attPlain))),
+    basic_support: hexUp(desEncryptCBC(key, iv, enc.encode(bsPlain))),
+    anno_scadenza: annoScad, anno_bs: annoBs, palmari,
+  };
+}
 
 function json(d, s = 200) { return new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json; charset=utf-8" } }); }
 function err(m, s = 400) { return json({ ok: false, error: m }, s); }
@@ -75,6 +104,21 @@ export async function handleAdmin(request, env, url) {
       .bind(b.piano || "pro", b.max_casse || 1, b.max_palmari || 0, JSON.stringify(b.moduli || {}),
         b.scadenza || null, b.grace_giorni || 14, b.stato || "attiva", Date.now(), b.tenant_id).run();
     return json({ ok: true });
+  }
+
+  if (p === "/admin/api/genera-licenza" && request.method === "POST") {
+    if (!isAdmin) return err("riservato al rivenditore", 403);
+    if (!env.LEGACY_LIC) return err("generatore non configurato (manca il secret LEGACY_LIC)", 500);
+    const b = await request.json().catch(() => ({}));
+    try {
+      const g = generaLicenzeLegacy(env, b);
+      // contenuto dei file pronti per l'app vecchia (cartella /Licenze)
+      g.file_txt_nome = `Ristorandro_${(b.matricola || "").toUpperCase().trim()}.txt`;
+      g.file_txt = `${g.attivazione}\nRistorandro ${(b.matricola || "").toUpperCase().trim()}\n* Versione PRO\n* Palmari Attivi: ${g.palmari}\n* Scadenza: 31/12/${g.anno_scadenza}\n`;
+      g.file_bs_nome = `BasicSupport_Anno_${g.anno_bs}_${(b.matricola || "").toUpperCase().trim()}.bs`;
+      g.file_bs = `${g.basic_support}\nMatricola fiscale: ${(b.matricola || "").toUpperCase().trim()}\nAnno Basic Support: ${g.anno_bs}\n`;
+      return json({ ok: true, ...g });
+    } catch (e) { return err(e.message); }
   }
 
   if (p === "/admin/api/devices" && request.method === "GET") {
